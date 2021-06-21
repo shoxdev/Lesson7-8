@@ -25,4 +25,7 @@ public class Student {
 
     @ManyToMany
     private List<Subject> subject;
+
+    @ManyToOne
+    private Group group;
 }

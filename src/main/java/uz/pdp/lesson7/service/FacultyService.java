@@ -41,4 +41,26 @@ public class FacultyService {
     public List<Faculty> get() {
       return   facultyRepository.findAll();
     }
+
+    public String delete(Integer id) {
+        facultyRepository.deleteById(id);
+        return "Deleted";
+    }
+
+
+    public String edit(Integer id, FacultyDto facultyDto) {
+        Optional<Faculty> byId = facultyRepository.findById(id);
+        if (byId.isPresent()){
+            Faculty faculty = byId.get();
+            faculty.setName(facultyDto.getName());
+            Optional<University> optional = universityRepository.findById(facultyDto.getUniversityId());
+            if (!optional.isPresent()){
+                return "university not found";
+            }
+            faculty.setUniversity(optional.get());
+            facultyRepository.save(faculty);
+            return "Faculty edited";
+        }
+        return "Faculty not found";
+    }
 }
